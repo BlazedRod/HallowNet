@@ -1,16 +1,32 @@
-# React + Vite
+<div align="center">
+  <img src="public/bat.png" alt="HallowNet Logo" width="120" />
+  <h1>HallowNet</h1>
+  <p><strong>The ultimate Chromium-based browser for Halloween, horror, and autumn enthusiasts.</strong></p>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🎃 What is HallowNet?
+HallowNet is a fully custom, heavily themed desktop web browser built from the ground up using Electron and React. It is designed to immerse you in a spooky, atmospheric browsing experience complete with ambient weather effects, ghostly tutorials, and a completely custom UI that ditches the boring standard browser look.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🦇 Core Features
 
-## React Compiler
+*   **Custom React Installer:** HallowNet bypasses standard boring Windows installers for a fully custom, beautifully animated installation experience.
+*   **The Crypt (Password Manager):** A secure, encrypted local vault to store your credentials.
+*   **Atmospheric Themes:** Choose from custom built-in themes like *Classic Halloween*, *Blood Moon*, *Geesebimps*, and *Ectoplasm*, or build your own from scratch using the interactive Theme Creator!
+*   **Ghost Mode & The Gargoyle:** A heavily customized private browsing mode protected by a watchful Gargoyle that bypasses standard tracking.
+*   **The Trapdoor (Panic Button):** Hit a global hotkey to instantly slam shut your browsing session with an explosive animation and sound effect, hiding your tracks.
+*   **Poltergeist Macros:** Record your mouse movements, clicks, and typing, and play them back to automate your browsing.
+*   **Ambient Audio Engine:** Listen to dynamic, looping thunderstorms and autumn winds while you browse.
+*   **Seamless Auto-Updater:** Silently pings GitHub for new updates and beautifully integrates with the custom installer.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Architecture
 
-## Expanding the ESLint configuration
+HallowNet is built on a modern stack tailored for performance and extreme UI flexibility:
+*   **Framework:** React 18 & Vite
+*   **Desktop Engine:** Electron (Chromium & Node.js)
+*   **Styling:** Custom CSS (No Tailwind) tailored for intense animations, gradients, and glassmorphism.
+*   **Icons:** Lucide React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📜 Notice
+This project is currently developed as a personal, custom desktop experience. The source code is provided as-is without a formal open-source license. All rights reserved by the original creator.
