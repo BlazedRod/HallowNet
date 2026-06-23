@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════════════
+   HallowNet — Startup Splash Screen
+   Cinematic, professional, Halloween atmospheric
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=Share+Tech+Mono&display=swap');
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #010005;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.splash--in {
+  animation: splashFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.splash--out {
+  animation: splashFadeOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; transform: scale(1.05); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes splashFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.1); }
+}
+
+.splash__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(1, 0, 5, 0.2) 0%, rgba(1, 0, 5, 0.95) 100%),
+    var(--dashboard-bg) center center / cover no-repeat;
+  opacity: 0.5;
+  animation: bgDrift 10s linear infinite alternate;
+  z-index: 0;
+}
+
+@keyframes bgDrift {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1.15); }
+}
+
+/* ── Atmospheric glow orbs ── */
+.splash__glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.splash__glow--1 {
+  width: 1000px;
+  height: 1000px;
+  top: 50%;
+  left: 50%;
+  margin-top: -500px;
+  margin-left: -500px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-primary) 15%, transparent) 0%, transparent 60%);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+.splash__glow--2 {
+  width: 600px;
+  height: 600px;
+  top: 30%;
+  right: -100px;
+  background: radial-gradient(circle, rgba(80, 10, 140, 0.1) 0%, transparent 70%);
+  animation: glowPulse 5s ease-in-out infinite 1s;
+}
+
+.splash__glow--3 {
+  width: 500px;
+  height: 500px;
+  bottom: 0;
+  left: -80px;
+  background: radial-gradient(circle, rgba(120, 20, 0, 0.08) 0%, transparent 70%);
+  animation: glowPulse 6s ease-in-out infinite 2s;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1);   }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
+/* ── Scanline overlay ── */
+.splash__scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.07) 2px,
+    rgba(0, 0, 0, 0.07) 4px
+  );
+  z-index: 1;
+}
+
+/* ── Center block ── */
+.splash__center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: -120px; /* shift up visually to make room for terminal */
+}
+
+/* ── Emblem ── */
+.splash__emblem {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash__sigil {
+  position: absolute;
+  inset: -20px; /* Make it slightly larger than the container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sigilPulse 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+.splash__sigil-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent-primary) 50%, transparent));
+}
+
+@keyframes sigilPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+  50% { transform: scale(1.08) rotate(3deg); opacity: 1; filter: drop-shadow(0 0 20px var(--accent-primary)); }
+}
+
+.splash__ghost {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent-primary) 80%, transparent));
+  animation: ghostFloat 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+.splash__ghost svg path {
+  fill: color-mix(in srgb, var(--accent-primary) 8%, transparent);
+  stroke: color-mix(in srgb, var(--accent-primary) 70%, transparent);
+}
+.splash__ghost svg circle {
+  fill: color-mix(in srgb, var(--accent-primary) 90%, transparent);
+}
+.splash__ghost svg circle:nth-of-type(3),
+.splash__ghost svg circle:nth-of-type(4) {
+  fill: #010005;
+}
+
+@keyframes ghostFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-8px) scale(1.02); }
+}
+
+/* ── Wordmark ── */
+.splash__wordmark {
+  font-family: var(--brand-font, 'Cinzel Decorative', serif);
+  font-size: 4.5rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: var(--accent-primary);
+  margin: 0;
+  text-shadow:
+    0 0 15px color-mix(in srgb, var(--accent-primary) 60%, transparent),
+    0 0 40px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  display: flex;
+}
+
+.splash__letter {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(12px);
+  transform: scale(1.2) translateY(20px);
+  animation: letterRiseAAA 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.splash__letter--net {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+@keyframes letterRiseAAA {
+  to { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
+}
+
+.splash__tagline {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 130, 0.6);
+  margin: 0;
+  animation: fadeUp 1.5s ease forwards 1s;
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+
+/* ── Mystic Loader ── */
+.splash__mystic-loader {
+  position: absolute;
+  bottom: 80px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 3;
+  animation: fadeUp 1.5s ease forwards 0.5s;
+  opacity: 0;
+}
+
+.splash__incantation {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: color-mix(in srgb, var(--accent-primary) 80%, transparent);
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  animation: incantationChange 0.5s ease;
+}
+
+@keyframes incantationChange {
+  0% { opacity: 0; filter: blur(5px); transform: translateY(5px); }
+  100% { opacity: 1; filter: blur(0px); transform: translateY(0); }
+}
+
+.splash__progress-track {
+  width: 100%;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.splash__progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 15px 2px var(--accent-primary);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}

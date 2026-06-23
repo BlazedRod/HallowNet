@@ -1,0 +1,28 @@
+HALLOWNET END USER LICENSE AGREEMENT
+
+Copyright (c) 2024 HallowNet. All rights reserved.
+
+By installing HallowNet, you agree to the following:
+
+1. GRANT OF LICENSE
+   HallowNet grants you a personal, non-exclusive, non-transferable license to 
+   install and use this software for personal, non-commercial purposes.
+
+2. RESTRICTIONS
+   You may not reverse engineer, decompile, or disassemble HallowNet. You may 
+   not rent, lease, or lend the software.
+
+3. DISCLAIMER OF WARRANTIES
+   HallowNet is provided "as is" without warranty of any kind. Use at your own risk.
+   The developers are not responsible for any hauntings, possessions, or paranormal 
+   activity that may result from use of this software.
+
+4. PRIVACY
+   HallowNet does not collect, store, or transmit any personal data. Ghost Mode 
+   ensures your browsing remains entirely your own.
+
+5. THE BEYOND
+   All features of HallowNet, including Poltergeist automation, Barricade ad-blocking, 
+   Banshee audio, and Ghost Mode, are provided for personal use only.
+
+By clicking "I Agree" you accept these terms and invite HallowNet into your machine.

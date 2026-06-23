@@ -1,0 +1,220 @@
+.trapdoor-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.trapdoor-container.active {
+  pointer-events: auto;
+}
+
+/* The Heavy Metal Door */
+.trapdoor-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  transform: translateY(-100%);
+  border-bottom: 20px solid #0a0a0a;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.trapdoor-container.active .trapdoor-panel {
+  animation: trapdoorSlam 0.4s cubic-bezier(0.5, 0, 0.1, 1) forwards;
+}
+
+.trapdoor-container:not(.active) .trapdoor-panel {
+  /* Animate opening only if it was previously closed. We use a class toggle in React for this. */
+}
+
+.trapdoor-container.opening .trapdoor-panel {
+  animation: trapdoorOpen 0.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+
+@keyframes trapdoorSlam {
+  0% { transform: translateY(-100%); }
+  60% { transform: translateY(5%); }
+  80% { transform: translateY(-2%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes trapdoorOpen {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); display: none; }
+}
+
+/* The Fake Screen Content */
+.trapdoor-fake-screen {
+  flex: 1;
+  background: #202124;
+  color: #bdc1c6;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transition-delay: 0.3s;
+}
+
+.trapdoor-container.active .trapdoor-fake-screen {
+  opacity: 1;
+}
+
+/* Fake Google Dark Mode Styling */
+.fake-google-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 15px 20px;
+  gap: 15px;
+  font-size: 13px;
+}
+
+.fake-google-header span {
+  cursor: pointer;
+}
+
+.fake-google-header span:hover {
+  text-decoration: underline;
+}
+
+.fake-google-apps-icon {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 3px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.fake-google-apps-icon:hover {
+  background: rgba(255,255,255,0.04);
+}
+.fake-google-apps-icon .dot {
+  width: 4px; height: 4px;
+  background: #e8eaed;
+  border-radius: 50%;
+}
+
+.fake-google-profile {
+  width: 32px; height: 32px;
+  background: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.fake-google-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px;
+}
+
+.fake-google-logo {
+  font-family: 'Product Sans', Arial, sans-serif;
+  font-size: 80px;
+  letter-spacing: -3px;
+  margin-bottom: 30px;
+  user-select: none;
+}
+
+.fake-google-search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 584px;
+  background: #202124;
+  border: 1px solid #5f6368;
+  border-radius: 24px;
+  padding: 0 14px;
+  height: 46px;
+}
+
+.fake-google-search-bar:hover {
+  background: #303134;
+  box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+  border-color: rgba(223,225,229,0);
+}
+
+.fake-search-icon, .fake-mic-icon {
+  width: 24px; height: 24px;
+  padding: 2px;
+}
+
+.fake-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e8eaed;
+  font-size: 16px;
+  padding: 0 10px;
+}
+
+.fake-google-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.fake-google-buttons button {
+  background: #303134;
+  color: #e8eaed;
+  border: 1px solid #303134;
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.fake-google-buttons button:hover {
+  border: 1px solid #5f6368;
+}
+
+.fake-google-footer {
+  background: #171717;
+  color: #9aa0a6;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fake-google-footer-top {
+  padding: 15px 30px;
+  border-bottom: 1px solid #3c4043;
+}
+
+.fake-google-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+}
+
+.fake-google-footer-links {
+  display: flex;
+  gap: 25px;
+}
+
+.fake-google-footer-links span {
+  cursor: pointer;
+}
+.fake-google-footer-links span:hover {
+  text-decoration: underline;
+}

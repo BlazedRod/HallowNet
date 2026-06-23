@@ -1,0 +1,474 @@
+.theme-creator-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #050308;
+  color: #e0d0e0;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  animation: themeLabEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes themeLabEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Header ── */
+.tc-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  background: #08050a;
+  border-bottom: 1px solid var(--border-highlight);
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.tc-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tc-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.tc-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tc-btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a090b0;
+}
+.tc-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.tc-btn-save {
+  background: color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+}
+.tc-btn-save:hover {
+  background: color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 50%, transparent);
+  color: #fff;
+}
+
+/* ── Content Area ── */
+.tc-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Left Controls Panel ── */
+.tc-controls {
+  width: 400px;
+  background: #09060c;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 30px 30px 300px 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Custom scrollbar for controls */
+.tc-controls::-webkit-scrollbar {
+  width: 6px;
+}
+.tc-controls::-webkit-scrollbar-track {
+  background: #050308;
+}
+.tc-controls::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+.tc-controls::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+.tc-section h2 {
+  font-family: 'Cinzel', serif;
+  color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  margin: 0 0 20px 0;
+}
+
+.tc-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tc-input-group label {
+  font-size: 0.85rem;
+  color: #a090b0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tc-text-input, .tc-select {
+  background: #030205;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.tc-text-input:focus, .tc-select:focus {
+  border-color: var(--accent-primary);
+}
+
+.tc-color-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Color Pickers ── */
+.tc-color-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tc-color-label {
+  font-size: 0.75rem;
+  color: #8a7a9a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tc-color-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #030205;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.tc-color-input-group:focus-within {
+  border-color: var(--accent-primary);
+}
+
+.tc-color-swatch-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.tc-color-hex-input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  width: 100%;
+  outline: none;
+}
+
+/* Custom Popover Color Picker */
+.tc-popover-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+}
+
+.tc-color-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 9999;
+  background: rgba(13, 10, 20, 0.95);
+
+
+  border: 1px solid var(--accent-primary);
+  border-radius: 6px;
+  padding: 16px;
+  width: 240px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 20px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tc-color-preview-large {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.tc-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tc-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tc-slider-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 12px;
+}
+
+.tc-range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  outline: none;
+  background: transparent;
+}
+
+.tc-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.8);
+}
+
+/* ── Right Live Preview Panel ── */
+.tc-preview-pane {
+  flex: 1;
+  background: repeating-linear-gradient(
+    45deg,
+    #030205,
+    #030205 10px,
+    #050308 10px,
+    #050308 20px
+  );
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tc-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #a090b0;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.tc-preview-window-wrapper {
+  width: 100%;
+  max-width: 800px;
+  height: 500px;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: #000;
+  /* Add a subtle glow behind the whole preview window based on accent primary */
+  position: relative;
+}
+
+/* ── Custom Dropdown (replaces native select) ── */
+.tc-select-custom {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--accent-primary);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  padding: 10px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tc-select-custom:hover {
+  border-color: var(--accent-primary);
+  background: rgba(20, 10, 30, 0.6);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+}
+.tc-select-arrow {
+  transition: transform 0.2s ease;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+.tc-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  background: #0d0a14;
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 50%, transparent);
+  box-shadow: 0 16px 60px rgba(0,0,0,0.95), 0 0 30px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  z-index: 9999;
+  padding: 6px 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.tc-dropdown-item {
+  padding: 9px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-left: 2px solid transparent;
+}
+.tc-dropdown-item:hover {
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  color: var(--text-primary);
+  border-left-color: var(--accent-primary);
+}
+.tc-dropdown-item.active {
+  color: var(--accent-primary);
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  border-left-color: var(--accent-primary);
+}
+
+/* ── Background Image Selector ── */
+.tc-bg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.tc-bg-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tc-bg-thumbnail:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.tc-bg-thumbnail.active {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent-primary) 40%, transparent);
+}
+
+.tc-bg-selected-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  backdrop-filter: blur(2px);
+}
+.tc-bg-upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tc-bg-upload-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.tc-animation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.tc-anim-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.tc-anim-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tc-anim-btn.active {
+  background: color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}

@@ -1,0 +1,224 @@
+/* GhostTutorial.css */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  pointer-events: auto;
+}
+
+/* The Spotlight Box - creates the full screen dimming effect with a cutout */
+.tutorial-spotlight {
+  position: absolute;
+  pointer-events: none;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 60%, transparent) inset, 
+              0 0 15px color-mix(in srgb, var(--accent-primary) 40%, transparent),
+              0 0 0 1px var(--accent-primary);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent-primary) 5%, transparent);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 1;
+  top: 0; left: 0; /* Base for transform */
+}
+
+/* Ghost Container - GPU Accelerated */
+.ghost-character-wrapper {
+  position: absolute;
+  top: 0; left: 0;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* When the wrapper is near the right edge, we align items to the right so the bubble doesn't overflow */
+.ghost-character-wrapper.align-right {
+  align-items: flex-end;
+}
+.ghost-character-wrapper.align-center {
+  align-items: center;
+}
+.ghost-character-wrapper.align-left {
+  align-items: flex-start;
+}
+
+.ghost-character-wrapper.center-screen {
+  align-items: center;
+}
+
+.ghost-svg-container {
+  width: 70px;
+  height: 84px;
+  animation: ghostFloat 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 25px color-mix(in srgb, var(--accent-primary) 70%, transparent));
+  position: relative;
+  z-index: 100;
+}
+
+.ghost-fly-away {
+  animation: ghostFlyAway 0.8s forwards cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+}
+
+@keyframes ghostFlyAway {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+}
+
+/* Particle Trail Emitter */
+.ghost-trail-particles {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 100%;
+  height: 50px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ghost-particle {
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 10px var(--accent-primary);
+}
+
+.ghost-particle:nth-child(1) { left: 30%; animation: particleFloat 2s infinite 0.1s; }
+.ghost-particle:nth-child(2) { left: 50%; animation: particleFloat 2.5s infinite 0.4s; }
+.ghost-particle:nth-child(3) { left: 70%; animation: particleFloat 1.8s infinite 0.7s; }
+.ghost-particle:nth-child(4) { left: 40%; animation: particleFloat 2.2s infinite 1.2s; }
+.ghost-particle:nth-child(5) { left: 60%; animation: particleFloat 2.7s infinite 0.9s; }
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(40px) scale(0.2); opacity: 0; }
+}
+
+@keyframes ghostFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(1deg); }
+}
+
+/* Sleek Glass Bubble */
+.tutorial-speech-bubble {
+  background: linear-gradient(135deg, rgba(20, 15, 30, 0.95), rgba(10, 5, 15, 0.98));
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 0 1px color-mix(in srgb, var(--accent-primary) 40%, transparent) inset;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-top: 8px;
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(15px) scale(0.95);
+  animation: spectralManifest 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.bubble-fade-out {
+  animation: spectralVanish 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+}
+
+@keyframes spectralVanish {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(15px) scale(0.95); }
+}
+
+/* Upward pointing arrow for the bubble */
+.tutorial-speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 16px;
+  height: 16px;
+  background: rgba(20, 15, 30, 0.95);
+  border-left: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
+}
+
+@keyframes spectralManifest {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.tutorial-speech-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent-primary) 60%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  padding-bottom: 6px;
+}
+
+.tutorial-speech-text {
+  margin-bottom: 20px;
+  color: #e5d8f5;
+}
+
+.tutorial-speech-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.tutorial-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  border-radius: 4px;
+  color: #ccc;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.tutorial-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.tutorial-btn.primary {
+  background: color-mix(in srgb, var(--accent-primary) 25%, transparent);
+  border-color: var(--accent-primary);
+  color: #fff;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent-primary) 80%, transparent);
+}
+
+.tutorial-btn.primary:hover {
+  background: color-mix(in srgb, var(--accent-primary) 45%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 50%, transparent);
+}
+
+.poltergeist-ripple {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid #00ff66;
+  z-index: 9999998;
+  pointer-events: none;
+  animation: nativeRipple 0.4s ease-out forwards;
+}
+
+@keyframes nativeRipple {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}

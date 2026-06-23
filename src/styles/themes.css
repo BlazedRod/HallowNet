@@ -1,0 +1,142 @@
+:root {
+  /* ── Classic Halloween ── */
+  --bg-primary:    #08060b;   /* near-void black with a purple undertone */
+  --bg-secondary:  #0f0c12;   /* slightly elevated surface */
+  --bg-tertiary:   #181320;   /* card/panel surface */
+
+  --accent-primary:   #ff5500;   /* pumpkin ember orange */
+  --accent-secondary: #7b21d4;   /* deep witchy purple */
+  --accent-glow:      #ff8c00;   /* lighter orange for glows */
+
+  --text-primary:   #f0ecf5;
+  --text-secondary: #9088a0;
+  --text-muted:     #4a4055;
+
+  --border-color:     rgba(255, 255, 255, 0.06);
+  --border-highlight: rgba(255, 85, 0, 0.25);
+
+  --panel-bg:   rgba(15, 12, 18, 0.75);
+  --glass-blur: 8px;
+
+  --dashboard-bg: url('../assets/backgrounds/dashboard-bg.png');
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --brand-font: 'Cinzel Decorative', serif;
+
+  --transition-fast:   0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-glow-orange: 0 0 20px rgba(255, 85, 0, 0.35), 0 0 40px rgba(255, 85, 0, 0.12);
+  --shadow-glow-purple: 0 0 20px rgba(123, 33, 212, 0.4), 0 0 40px rgba(123, 33, 212, 0.15);
+}
+
+[data-theme='autumn-forest'] {
+  --bg-primary:    #090705;
+  --bg-secondary:  #120f0c;
+  --bg-tertiary:   #1e1812;
+
+  --accent-primary:   #c8401a;
+  --accent-secondary: #d68a00;
+  --accent-glow:      #e05a20;
+
+  --text-primary:   #f5ede3;
+  --text-secondary: #9e8e7a;
+  --text-muted:     #5a4e3a;
+
+  --border-color:     rgba(255, 220, 180, 0.06);
+  --border-highlight: rgba(200, 64, 26, 0.25);
+
+  --panel-bg:   rgba(18, 15, 12, 0.75);
+  --dashboard-bg: url('../assets/backgrounds/dark_forest.png');
+
+  --shadow-glow-orange: 0 0 20px rgba(138, 43, 226, 0.35), 0 0 40px rgba(138, 43, 226, 0.12);
+  --shadow-glow-purple: 0 0 20px rgba(138, 43, 226, 0.35), 0 0 40px rgba(138, 43, 226, 0.12);
+}
+
+/* ── Geesebimps ── */
+[data-theme='geesebimps'] {
+  --bg-primary:    #030502;   /* near-void green/black */
+  --bg-secondary:  #080d05;
+  --bg-tertiary:   #0d1408;
+
+  --accent-primary:   #39ff14;   /* toxic neon green */
+  --accent-secondary: #00ff40;   /* lighter neon green */
+  --accent-glow:      #55ff33;
+
+  --text-primary:   #ebf5eb;
+  --text-secondary: #8da08d;
+  --text-muted:     #4d594d;
+
+  --border-color:     rgba(57, 255, 20, 0.1);
+  --border-highlight: rgba(57, 255, 20, 0.3);
+
+  --panel-bg:   rgba(8, 13, 5, 0.75);
+  --dashboard-bg: url('../assets/backgrounds/haunted_carnival.png');
+
+  --shadow-glow-orange: 0 0 20px rgba(57, 255, 20, 0.4), 0 0 40px rgba(57, 255, 20, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(57, 255, 20, 0.4), 0 0 40px rgba(57, 255, 20, 0.15);
+
+  --brand-font: 'Creepster', cursive;
+}
+
+/* ── Blood Moon ── */
+[data-theme='blood-moon'] {
+  --bg-primary:    #0a0202;   /* deep blood void */
+  --bg-secondary:  #140303;
+  --bg-tertiary:   #1f0505;
+
+  --accent-primary:   #b80000;   /* blood red */
+  --accent-secondary: #ff1a1a;   /* bright blood red */
+  --accent-glow:      #ff3333;
+
+  --text-primary:   #ffebe6;
+  --text-secondary: #b38080;
+  --text-muted:     #663333;
+
+  --border-color:     rgba(184, 0, 0, 0.15);
+  --border-highlight: rgba(184, 0, 0, 0.4);
+
+  --panel-bg:   rgba(15, 3, 3, 0.75);
+  --dashboard-bg: url('../assets/backgrounds/dashboard-bg.png');
+
+  --shadow-glow-orange: 0 0 20px rgba(184, 0, 0, 0.4), 0 0 40px rgba(184, 0, 0, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(184, 0, 0, 0.4), 0 0 40px rgba(184, 0, 0, 0.15);
+
+  --brand-font: 'Scream Real', sans-serif;
+}
+/* ── Grimoire ── */
+[data-theme='grimoire'] {
+  --bg-primary:    #0a050f;
+  --bg-secondary:  #150a1f;
+  --bg-tertiary:   #210f30;
+
+  --accent-primary:   #4a0080;
+  --accent-secondary: #55ff55;
+  --accent-glow:      #7822bd;
+
+  --text-primary:   #f0e6d2;
+  --text-secondary: #c2b59b;
+  --text-muted:     #8f8269;
+
+  --border-color:     rgba(85, 255, 85, 0.15);
+  --border-highlight: rgba(85, 255, 85, 0.4);
+
+  --panel-bg:   rgba(10, 5, 15, 0.85);
+  --dashboard-bg: url('../assets/backgrounds/haunted_mansion.png');
+
+  --shadow-glow-orange: 0 0 20px rgba(85, 255, 85, 0.4), 0 0 40px rgba(85, 255, 85, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(74, 0, 128, 0.6), 0 0 40px rgba(74, 0, 128, 0.3);
+
+  --brand-font: 'Federo', sans-serif;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,308 @@
+/* ── Sidebar ── */
+.sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0; /* Animated width */
+  z-index: 100;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+
+
+  border-left: 1px solid var(--border-color);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.9);
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.sidebar--open {
+  width: 300px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Themed scrollbar */
+.sidebar::-webkit-scrollbar        { width: 4px; }
+.sidebar::-webkit-scrollbar-track  { background: #04030a; }
+.sidebar::-webkit-scrollbar-thumb  { background: color-mix(in srgb, var(--accent-primary) 30%, transparent); border-radius: 0; }
+.sidebar::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent-primary) 60%, transparent); }
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px 11px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(180, 120, 60, 0.7);
+}
+
+/* ── Widget ── */
+.widget {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.3s ease;
+  min-width: 300px; /* prevent squishing during animation */
+}
+.widget:hover {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+/* Subtle left orange accent line on each widget */
+.widget::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent-primary) 40%, transparent), transparent);
+  border-radius: 0 1px 1px 0;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 16px 9px 20px;
+}
+
+.widget-header-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(180, 120, 60, 0.65);
+}
+
+.widget-icon {
+  color: color-mix(in srgb, var(--accent-primary) 80%, #000);
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent-primary) 50%, transparent));
+}
+
+.widget-body {
+  padding: 2px 16px 16px 20px;
+}
+
+/* ── Weather ── */
+.weather-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.weather-temp {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.04em;
+  /* Subtle warm glow */
+  text-shadow: 0 0 20px rgba(255, 120, 40, 0.2);
+}
+
+.weather-meta {
+  font-size: 0.72rem;
+  color: rgba(140, 110, 80, 0.7);
+  text-align: right;
+  line-height: 1.8;
+}
+
+/* ── Moon ── */
+.moon-display {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.moon-orb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(123, 33, 212, 0.5);
+  position: relative;
+  overflow: hidden;
+  /* Very dark moon background */
+  background: #020108;
+  box-shadow:
+    0 0 12px rgba(100, 20, 180, 0.3),
+    inset 0 0 12px rgba(0, 0, 0, 0.9);
+  flex-shrink: 0;
+}
+
+.moon-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #9b40e8 0%, #c060ff 50%, #7a1fd0 100%);
+  opacity: 0.75;
+}
+
+.moon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.moon-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.moon-pct {
+  font-size: 0.72rem;
+  color: rgba(140, 100, 180, 0.7);
+}
+
+/* ── Bookmarks / History link lists ── */
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.link-item {
+  padding: 7px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  overflow: hidden;
+  border-left: 2px solid transparent;
+}
+
+.link-item:hover {
+  background: color-mix(in srgb, var(--accent-primary) 8%, transparent);
+  border-left-color: color-mix(in srgb, var(--accent-primary) 40%, transparent);
+}
+
+.link-item-title {
+  font-size: 0.81rem;
+  font-weight: 500;
+  color: rgba(200, 170, 130, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--transition-fast);
+}
+
+.link-item:hover .link-item-title {
+  color: rgba(255, 200, 140, 1);
+}
+
+.link-item-url {
+  font-size: 0.68rem;
+  color: rgba(100, 80, 60, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.empty-state {
+  font-size: 0.77rem;
+  color: rgba(100, 80, 60, 0.6);
+  font-style: italic;
+}
+
+/* ── Theme selector custom dropdown ── */
+.theme-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.theme-select-btn {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--accent-primary);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  padding: 10px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.theme-select-btn:hover {
+  border-color: var(--accent-primary);
+  background: rgba(20, 10, 30, 0.6);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+}
+
+.theme-dropdown-menu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  top: auto;
+  left: 0;
+  min-width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background: #0d0a14;
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 50%, transparent);
+  box-shadow: 0 16px 60px rgba(0,0,0,0.95), 0 0 30px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  z-index: 9999;
+  padding: 6px 0;
+
+
+}
+
+.theme-dropdown-group-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 12px;
+}
+
+.theme-dropdown-item {
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-left: 2px solid transparent;
+}
+
+.theme-dropdown-item:hover {
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  color: var(--text-primary);
+  border-left-color: var(--accent-primary);
+}
+
+.theme-dropdown-item.active {
+  color: var(--accent-primary);
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  border-left-color: var(--accent-primary);
+}

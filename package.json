@@ -1,0 +1,69 @@
+{
+  "name": "hallownet",
+  "private": true,
+  "version": "1.6.8",
+  "description": "The Browser of the Damned",
+  "author": "HallowNet",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "electron": "wait-on tcp:5173 && cross-env NODE_ENV=development electron .",
+    "electron:dev": "concurrently -k \"npm run dev\" \"npm run electron\"",
+    "build:exe": "npm run build && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.hallownet.app",
+    "productName": "HallowNet",
+    "copyright": "Copyright © 2024 HallowNet",
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "public/icon.ico"
+    },
+    "portable": {
+      "artifactName": "HallowNet Setup ${version}.${ext}",
+      "splashImage": "build/loading.gif"
+    },
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/icon.ico",
+      "package.json"
+    ]
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "lucide-react": "^1.20.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "suncalc": "^2.0.0",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^10.0.3",
+    "cross-env": "^10.1.0",
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "sharp": "^0.35.1",
+    "vite": "^8.0.12",
+    "wait-on": "^9.0.10"
+  }
+}

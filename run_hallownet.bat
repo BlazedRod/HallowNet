@@ -1,0 +1,3 @@
+@echo off
+echo Starting HallowNet...
+npm run electron:dev

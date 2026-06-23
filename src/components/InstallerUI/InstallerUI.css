@@ -1,0 +1,332 @@
+.installer-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #110e16 0%, #060408 100%);
+  color: #e0d0e0;
+  font-family: var(--font-family, sans-serif);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.installer-fog {
+  position: absolute;
+  inset: 0;
+  background: url('/fog.png') repeat-x center bottom;
+  background-size: cover;
+  opacity: 0.15;
+
+  animation: fogDrift 60s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fogDrift {
+  from { background-position: 0 bottom; }
+  to { background-position: -2000px bottom; }
+}
+
+.installer-titlebar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 10;
+}
+
+.installer-drag-region {
+  flex: 1;
+  -webkit-app-region: drag;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #8a7e90;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.installer-close-btn {
+  -webkit-app-region: no-drag;
+  background: transparent;
+  border: none;
+  color: #8a7e90;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.installer-close-btn:hover {
+  background: rgba(255, 51, 51, 0.2);
+  color: #ff3333;
+}
+
+.installer-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  z-index: 5;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.installer-logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.installer-ghost {
+  width: 80px;
+  height: 96px;
+  filter: drop-shadow(0 0 20px color-mix(in srgb, var(--accent-primary, #9900ff) 50%, transparent));
+  animation: float 4s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.installer-title {
+  font-size: 28px;
+  letter-spacing: 12px;
+  font-weight: 300;
+  margin: 0;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary, #9900ff) 50%, transparent);
+  color: #fff;
+}
+
+@keyframes slideFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.installer-step {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: slideFadeUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.installer-step.center-content {
+  align-items: center;
+  text-align: center;
+}
+
+.installer-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #a090a0;
+  text-transform: uppercase;
+}
+
+.installer-label.pulsing {
+  animation: pulseOpacity 2s infinite;
+}
+
+@keyframes pulseOpacity {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.installer-label.success {
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+  font-size: 16px;
+}
+
+.installer-label.error {
+  color: #ff3333;
+  text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+  font-size: 16px;
+}
+
+.installer-path-selector {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.installer-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 12px 16px;
+  font-family: monospace;
+  font-size: 12px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.installer-browse-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0 20px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  font-size: 11px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.installer-browse-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.installer-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.installer-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.installer-checkbox-label input[type="checkbox"] {
+  accent-color: var(--accent-primary, #9900ff);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.installer-checkbox-text {
+  font-size: 13px;
+  color: #d0c0d0;
+  letter-spacing: 1px;
+}
+
+.installer-manifest-btn {
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 16px 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  box-shadow: inset 0 0 15px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.installer-manifest-btn.secondary-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  color: #a090a0;
+}
+.installer-manifest-btn.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
+  text-shadow: 0 0 5px #fff;
+}
+
+.installer-eula-box {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 4px;
+  color: #a090a0;
+  font-size: 12px;
+  line-height: 1.6;
+  max-height: 150px;
+  overflow-y: auto;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.installer-eula-box p {
+  margin: 0 0 10px 0;
+}
+.installer-eula-box p:last-child {
+  margin-bottom: 0;
+}
+
+.installer-manifest-btn:hover {
+  background: color-mix(in srgb, var(--accent-primary, #9900ff) 20%, transparent);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--accent-primary, #9900ff) 40%, transparent);
+  text-shadow: 0 0 10px #fff;
+}
+
+.installer-manifest-btn.error-btn {
+  border-color: #ff3333;
+  box-shadow: inset 0 0 15px rgba(255, 51, 51, 0.2);
+}
+.installer-manifest-btn.error-btn:hover {
+  background: rgba(255, 51, 51, 0.2);
+  box-shadow: 0 0 30px rgba(255, 51, 51, 0.4);
+}
+
+.installer-progress-container {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.installer-progress-bar {
+  height: 100%;
+  background: var(--accent-primary, #9900ff);
+  box-shadow: 0 0 10px var(--accent-primary, #9900ff);
+  transition: width 0.3s ease;
+}
+
+.installer-desc {
+  color: #8a7e90;
+  font-size: 13px;
+}
+
+.installer-error-box {
+  background: rgba(255, 51, 51, 0.1);
+  border: 1px solid rgba(255, 51, 51, 0.3);
+  padding: 15px;
+  color: #ff9999;
+  font-size: 12px;
+  border-radius: 4px;
+  width: 100%;
+  word-wrap: break-word;
+}

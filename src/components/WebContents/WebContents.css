@@ -1,0 +1,100 @@
+/* Web content area fills remaining space */
+.web-contents-container {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  background: #04030a;
+}
+
+/* Each tab's content pane — absolutely stacked, only active is visible */
+.web-content-pane {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #04030a;
+}
+
+/* Wrapper div for webview to allow overlay prompt */
+.webview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #04030a;
+}
+
+/* Actual Electron webview */
+.electron-webview {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: #04030a;
+  border: none;
+}
+
+/* Ghost Mode info banner */
+.ghost-mode-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: 28px;
+  background: rgba(88, 28, 135, 0.35);
+
+  border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: rgba(196, 132, 252, 0.85);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* ── Loading Indicator ── */
+.webview-loading-overlay {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.loading-ghost {
+  position: absolute;
+  animation: ghost-float 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent-primary) 50%, transparent));
+}
+
+.loading-pulse-ring {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  opacity: 0;
+  animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes ghost-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.vampyr-tombstone { position: absolute; inset: 0; background: radial-gradient(circle at center, #110515 0%, #05020a 100%); display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; } .vampyr-tombstone-content { display: flex; flex-direction: column; align-items: center; text-align: center; opacity: 0.8; transition: opacity 0.3s ease; } .vampyr-tombstone:hover .vampyr-tombstone-content { opacity: 1; } .vampyr-tombstone-title { font-family: 'Cinzel Decorative', serif; color: #ff2233; font-size: 2rem; margin: 15px 0 5px 0; letter-spacing: 0.1em; text-shadow: 0 0 15px rgba(255, 34, 51, 0.4); } .vampyr-tombstone-subtitle { font-family: var(--font-family); color: #886677; font-size: 0.9rem; line-height: 1.5; margin: 0; }
