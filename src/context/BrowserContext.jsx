@@ -18,7 +18,8 @@ export const BG_MAP = {
   'gothic_castle': gothicCastle,
   'haunted_carnival': hauntedCarnival,
   'spooky_basement': spookyBasement,
-  'scarecrow_field': scarecrowField
+  'scarecrow_field': scarecrowField,
+  'none': ''
 };
 
 const BrowserContext = createContext();
@@ -77,10 +78,24 @@ export const BrowserProvider = ({ children }) => {
   }, [tabs, activeTabId]);
   const [ghostMode, setGhostModeRaw] = useState(false);
 
+  // Auto-Updater State
+  const [updateAvailable, setUpdateAvailable] = useState(null);
+
+  useEffect(() => {
+    // Check for updates on startup
+    if (window.electronAPI?.updater) {
+      window.electronAPI.updater.checkForUpdates().then(result => {
+        if (result.updateAvailable) {
+          setUpdateAvailable(result);
+        }
+      });
+    }
+  }, []);
+
   // ── Persisted settings (read from localStorage on first mount) ──
   const [theme, setThemeRaw] = useState(() => {
     const stored = localStorage.getItem('hwn_theme');
-    const validBuiltins = ['classic-halloween', 'blood-moon', 'ectoplasm', 'witch-brew', 'geesebimps', 'grimoire'];
+    const validBuiltins = ['classic-halloween', 'autumn-forest', 'geesebimps', 'blood-moon', 'grimoire', 'whiteout'];
     if (stored && (validBuiltins.includes(stored) || stored.startsWith('custom-'))) return stored;
     return 'classic-halloween';
   });
@@ -325,22 +340,34 @@ export const BrowserProvider = ({ children }) => {
         document.head.appendChild(styleTag);
       }
       styleTag.textContent = `
-        :root {
+        :root[data-theme="${theme}"] {
           --bg-primary: ${custom.colors.bgPrimary};
           --bg-secondary: ${custom.colors.bgSecondary};
-          --bg-tertiary: ${custom.colors.bgTertiary};
+          --chrome-bg-base: ${custom.colors.chromeBgBase || '#080709'};
+          --chrome-bg-tabs: ${custom.colors.chromeBgTabs || '#050507'};
+          --chrome-bg-tab-active: ${custom.colors.chromeBgTabActive || '#131015'};
+          --chrome-bg-tab-inactive: ${custom.colors.chromeBgTabInactive || 'rgba(255, 255, 255, 0.03)'};
+          --chrome-bg-sidebar: ${custom.colors.chromeBgSidebar || 'rgba(15, 12, 18, 0.75)'};
+          --chrome-bg-favicon: ${custom.colors.chromeBgFavicon || '#3a3040'};
+          --chrome-bg-menu: ${custom.colors.chromeBgMenu || 'rgba(8, 5, 16, 0.96)'};
+          --chrome-bg-toolbar: ${custom.colors.chromeBgToolbar || '#0f0c12'};
+          --chrome-bg-urlbar: ${custom.colors.chromeBgUrlbar || '#06050a'};
+          --chrome-text-sidebar: ${custom.colors.chromeTextSidebar || 'rgba(180, 120, 60, 0.7)'};
           --accent-primary: ${custom.colors.accentPrimary};
           --accent-secondary: ${custom.colors.accentSecondary};
           --accent-glow: ${custom.colors.accentPrimary};
           --text-primary: ${custom.colors.textPrimary};
           --text-secondary: ${custom.colors.textSecondary};
           --text-muted: ${custom.colors.textMuted};
+          --text-searchbar: ${custom.colors.textSearchbar || custom.colors.textPrimary};
+          --chrome-text-tab-active: ${custom.colors.chromeTextTabActive || custom.colors.textPrimary};
+          --chrome-text-tab-inactive: ${custom.colors.chromeTextTabInactive || '#9088a0'};
           --border-color: ${custom.colors.borderColor};
           --border-highlight: ${custom.colors.borderHighlight};
           --panel-bg: ${custom.colors.panelBg};
           --brand-font: '${custom.brandFont}', sans-serif;
           --font-family: '${custom.uiFont}', sans-serif;
-          --dashboard-bg: url('${custom.backgroundImage?.startsWith('data:image') ? custom.backgroundImage : (BG_MAP[custom.backgroundImage] || BG_MAP['dashboard-bg'])}');
+          --dashboard-bg: ${!custom.backgroundImage || custom.backgroundImage === 'none' ? 'none' : `url('${custom.backgroundImage?.startsWith('data:image') ? custom.backgroundImage : (BG_MAP[custom.backgroundImage] || BG_MAP['dashboard-bg'])}')`};
           --shadow-glow-orange: 0 0 20px color-mix(in srgb, ${custom.colors.accentPrimary} 40%, transparent), 0 0 40px color-mix(in srgb, ${custom.colors.accentPrimary} 15%, transparent);
           --shadow-glow-purple: 0 0 20px color-mix(in srgb, ${custom.colors.accentPrimary} 40%, transparent), 0 0 40px color-mix(in srgb, ${custom.colors.accentPrimary} 15%, transparent);
         }
@@ -652,6 +679,7 @@ export const BrowserProvider = ({ children }) => {
       downloads, clearDownloads, removeDownload, pauseDownload, resumeDownload, cancelDownload, showDownload,
       setActiveWebview, goBack, goForward, reload,
       ghostMode, toggleGhostMode,
+      updateAvailable, setUpdateAvailable,
       GHOST_PARTITION
     }}>
       {children}

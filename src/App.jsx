@@ -25,7 +25,7 @@ function App() {
     }
 
     let savedTheme = localStorage.getItem('hwn_theme');
-    const validBuiltins = ['classic-halloween', 'blood-moon', 'ectoplasm', 'witch-brew', 'geesebimps', 'grimoire'];
+    const validBuiltins = ['classic-halloween', 'autumn-forest', 'geesebimps', 'blood-moon', 'grimoire', 'whiteout'];
     if (!savedTheme || (!validBuiltins.includes(savedTheme) && !savedTheme.startsWith('custom-'))) {
       savedTheme = 'classic-halloween';
     }
@@ -41,16 +41,26 @@ function App() {
           const styleTag = document.createElement('style');
           styleTag.id = 'hwn-custom-theme-style';
           styleTag.textContent = `
-            :root {
+            :root[data-theme="${savedTheme}"] {
               --bg-primary: ${custom.colors.bgPrimary};
               --bg-secondary: ${custom.colors.bgSecondary};
-              --bg-tertiary: ${custom.colors.bgTertiary};
+              --chrome-bg-base: ${custom.colors.chromeBgBase || '#080709'};
+              --chrome-bg-tabs: ${custom.colors.chromeBgTabs || '#050507'};
+              --chrome-bg-tab-active: ${custom.colors.chromeBgTabActive || '#131015'};
+              --chrome-bg-tab-inactive: ${custom.colors.chromeBgTabInactive || 'rgba(255, 255, 255, 0.03)'};
+              --chrome-bg-sidebar: ${custom.colors.chromeBgSidebar || 'rgba(15, 12, 18, 0.75)'};
+              --chrome-bg-favicon: ${custom.colors.chromeBgFavicon || '#3a3040'};
+              --chrome-bg-menu: ${custom.colors.chromeBgMenu || 'rgba(8, 5, 16, 0.96)'};
+              --chrome-bg-toolbar: ${custom.colors.chromeBgToolbar || '#0f0c12'};
+              --chrome-bg-urlbar: ${custom.colors.chromeBgUrlbar || '#06050a'};
+              --chrome-text-sidebar: ${custom.colors.chromeTextSidebar || 'rgba(180, 120, 60, 0.7)'};
               --accent-primary: ${custom.colors.accentPrimary};
               --accent-secondary: ${custom.colors.accentSecondary};
               --accent-glow: ${custom.colors.accentPrimary};
               --text-primary: ${custom.colors.textPrimary};
               --text-secondary: ${custom.colors.textSecondary};
               --text-muted: ${custom.colors.textMuted};
+              --text-searchbar: ${custom.colors.textSearchbar || custom.colors.textPrimary};
               --border-color: ${custom.colors.borderColor};
               --border-highlight: ${custom.colors.borderHighlight};
               --panel-bg: ${custom.colors.panelBg};

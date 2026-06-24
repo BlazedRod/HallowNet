@@ -159,6 +159,7 @@ const THEMES = [
   { id: 'geesebimps',        name: 'Geesebimps'        },
   { id: 'blood-moon',        name: 'Blood Moon'        },
   { id: 'grimoire',          name: 'Grimoire'          },
+  { id: 'whiteout',          name: 'Whiteout'          },
 ];
 
 /* ── Theme ── */

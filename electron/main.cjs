@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, session, shell, Menu, protocol } = require('electron');
 const path = require('path');
 const { initGargoyle } = require('./gargoyle.cjs');
+const { checkForUpdates, downloadAndInstallUpdate } = require('./updater.cjs');
 
 // Register the Void Protocol before app boots to grant it root-level CSP bypass privileges
 protocol.registerSchemesAsPrivileged([
@@ -21,6 +22,11 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const originalExe = process.env.PORTABLE_EXECUTABLE_FILE || '';
 const isInstallerMode = originalExe.toLowerCase().includes('setup') || originalExe.toLowerCase().includes('install');
+
+// Suppress dev-mode CSP warnings in the console (Vite requires unsafe-eval for hot-reloading)
+if (isDev) {
+  process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+}
 
 // CRITICAL: The installer itself is an Electron app. If it runs under the name "HallowNet", 
 // it locks the %APPDATA%/HallowNet folder, making it impossible to wipe during a Fresh Install.
@@ -161,7 +167,24 @@ app.whenReady().then(() => {
     });
   });
 
-  createWindow();
+  if (process.argv.includes('--silent-update') && isInstallerMode) {
+    console.log('Silent Update Mode Detected: Bypassing UI and overwriting files...');
+    const rawLocalAppData = process.env.LOCALAPPDATA || path.join(require('os').homedir(), 'AppData', 'Local');
+    const targetPath = path.join(rawLocalAppData, 'Programs', 'HallowNet');
+    const { executeInstall, finishInstall } = require('./installerLogic.cjs');
+    
+    executeInstall(targetPath, { desktopShortcut: false, startMenuShortcut: false })
+      .then(() => {
+        console.log('Silent update complete, launching new version.');
+        finishInstall(targetPath, true);
+      })
+      .catch((err) => {
+        console.error('Silent update failed:', err);
+        app.quit();
+      });
+  } else {
+    createWindow();
+  }
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -502,4 +525,13 @@ ipcMain.handle('download-cancel', (e, id) => {
 
 ipcMain.handle('download-show', (e, savePath) => {
   if (savePath) shell.showItemInFolder(savePath);
+});
+
+// ── Auto-Updater IPCs ──
+ipcMain.handle('hallow:checkForUpdates', async () => {
+  return await checkForUpdates();
+});
+
+ipcMain.handle('hallow:installUpdate', async (event, downloadUrl) => {
+  return await downloadAndInstallUpdate(downloadUrl, mainWindow);
 });

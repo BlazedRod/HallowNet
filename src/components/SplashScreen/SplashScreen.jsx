@@ -72,8 +72,6 @@ export default function SplashScreen({ onComplete }) {
               />
               <circle cx="30" cy="38" r="5" fill="color-mix(in srgb, var(--accent-primary) 90%, transparent)" />
               <circle cx="50" cy="38" r="5" fill="color-mix(in srgb, var(--accent-primary) 90%, transparent)" />
-              <circle cx="31.5" cy="36.5" r="1.8" fill="#06030a" />
-              <circle cx="51.5" cy="36.5" r="1.8" fill="#06030a" />
             </svg>
           </div>
         </div>

@@ -13,18 +13,22 @@
 
 .installer-fog {
   position: absolute;
-  inset: 0;
-  background: url('/fog.png') repeat-x center bottom;
-  background-size: cover;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 200vw;
+  background: url('../fog.png') repeat-x left bottom;
+  background-size: 50% 100%;
   opacity: 0.15;
 
   animation: fogDrift 60s linear infinite;
   pointer-events: none;
+  will-change: transform;
 }
 
 @keyframes fogDrift {
-  from { background-position: 0 bottom; }
-  to { background-position: -2000px bottom; }
+  from { transform: translateX(0); }
+  to { transform: translateX(-100vw); }
 }
 
 .installer-titlebar {

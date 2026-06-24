@@ -112,7 +112,7 @@ export default function Dashboard({ tabId, isActive }) {
   const isNewTab = tab?.url?.includes('hallow://newtab') || tab?.url?.includes('hallow-ghost://newtab');
 
   const activeThemeObj = customThemes.find(t => t.id === theme);
-  const particleAnim = activeThemeObj?.particleAnimation || 'bats';
+  const particleAnim = activeThemeObj?.particleAnimation || (['geesebimps', 'whiteout'].includes(theme) ? 'thunderstorm' : 'bats');
 
   const [weather, setWeather] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -121,7 +121,7 @@ export default function Dashboard({ tabId, isActive }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [contextMenu, setContextMenu] = useState(null);
 
-  const baseDelay = isNewTab ? 0.1 : 1.6;
+  const baseDelay = isNewTab ? 0.1 : (tabId === '1' ? 1.6 : 0.2);
 
   const days   = getDaysUntilHalloween();
   const moon   = getMoonPhase();
@@ -201,10 +201,12 @@ export default function Dashboard({ tabId, isActive }) {
           )}
 
           {/* ── Rolling Fog ── */}
-          <div className="fog-layer">
-            <div className="fog-drift fog-fast"></div>
-            <div className="fog-drift fog-slow"></div>
-          </div>
+          {(activeThemeObj?.showFog ?? true) && (
+            <div className="fog-layer">
+              <div className="fog-drift fog-fast"></div>
+              <div className="fog-drift fog-slow"></div>
+            </div>
+          )}
         </>
       )}
 
@@ -263,7 +265,9 @@ export default function Dashboard({ tabId, isActive }) {
         <section className="dash-directory">
           <div className="dash-section-header">
             <span className="dash-section-rule" />
-            <h2 className="dash-section-title">HallowNet Directory</h2>
+            <h2 className="dash-section-title">
+              HALLOWNET DIRECTORY
+            </h2>
             <span className="dash-section-rule" />
           </div>
           <div className="directory-grid">

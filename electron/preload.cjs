@@ -61,6 +61,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   
   // Tabs
+  // Auto-Updater
+  updater: {
+    checkForUpdates: () => ipcRenderer.invoke('hallow:checkForUpdates'),
+    installUpdate: (url) => ipcRenderer.invoke('hallow:installUpdate', url),
+    onProgress: (callback) => {
+      ipcRenderer.removeAllListeners('updater:progress');
+      ipcRenderer.on('updater:progress', (_e, data) => callback(data));
+    }
+  },
   showTabContextMenu: (tabId) => ipcRenderer.send('show-tab-context-menu', tabId),
   onTabMenuAction: (callback) => {
     ipcRenderer.removeAllListeners('tab-menu-action');

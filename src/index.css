@@ -72,3 +72,22 @@ body {
 .text-sm     { font-size: 0.875rem; }
 .text-xs     { font-size: 0.75rem; }
 .animate-pulse { animation: pulse 1.4s ease-in-out infinite; }
+
+@keyframes ghostEyeGlow {
+  0%, 100% { filter: drop-shadow(0 0 2px var(--accent-primary)); opacity: 0.8; }
+  50% { filter: drop-shadow(0 0 8px var(--accent-primary)); opacity: 1; }
+}
+.ghost-eye-glow-infinite {
+  animation: ghostEyeGlow 2s ease-in-out infinite;
+}
+
+
+
+
+@font-face { font-family: 'Cryptik'; src: url('./assets/fonts/Cryptik.ttf') format('truetype'); }
+@font-face { font-family: 'Exquisite Corpse'; src: url('./assets/fonts/Exquisite Corpse.ttf') format('truetype'); }
+@font-face { font-family: 'Frank Knows'; src: url('./assets/fonts/Frank Knows.ttf') format('truetype'); }
+@font-face { font-family: 'Kreepy Krawly'; src: url('./assets/fonts/Kreepy Krawly.ttf') format('truetype'); }
+@font-face { font-family: 'October Crow'; src: url('./assets/fonts/October Crow.ttf') format('truetype'); }
+@font-face { font-family: 'Raven Scream'; src: url('./assets/fonts/Raven Scream.ttf') format('truetype'); }
+@font-face { font-family: 'Raven Song'; src: url('./assets/fonts/Raven Song.ttf') format('truetype'); }

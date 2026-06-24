@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useBrowser } from '../../context/BrowserContext';
 import { Key, Shield, Trash2, Copy, Eye, EyeOff, LayoutTemplate, Search, PaintBucket, Lock, Info, Pencil, X, Check } from 'lucide-react';
 import './Settings.css';
@@ -9,6 +10,7 @@ const THEMES = [
   { id: 'geesebimps',        name: 'Geesebimps'        },
   { id: 'blood-moon',        name: 'Blood Moon'        },
   { id: 'grimoire',          name: 'Grimoire'          },
+  { id: 'whiteout',          name: 'Whiteout'          },
 ];
 
 const SEARCH_ENGINES = [
@@ -19,7 +21,7 @@ const SEARCH_ENGINES = [
 
 export default function Settings({ isActive }) {
   const { 
-    theme, setTheme, customThemes, deleteCustomTheme, activeTabId, navigate,
+    theme, setTheme, customThemes, deleteCustomTheme, activeTabId, navigate, tabs,
     sidebarOpen, setSidebarOpen,
     restoreSession, setRestoreSession,
     searchEngine, setSearchEngine,
@@ -27,12 +29,46 @@ export default function Settings({ isActive }) {
     toolbarSettings, setToolbarSettings,
     audioSettings, setAudioSettings,
     passwords, savePassword, deletePassword,
-    panicHotkey, setPanicHotkey
+    panicHotkey, setPanicHotkey,
+    updateAvailable
   } = useBrowser();
 
   const [activeTab, setActiveTab] = useState('general');
+
+  useEffect(() => {
+    const currentTab = tabs.find(t => t.id === activeTabId);
+    if (currentTab && currentTab.url.includes('#')) {
+      const hash = currentTab.url.split('#')[1];
+      if (['general', 'themes', 'toolbar', 'hotkeys', 'crypt', 'about'].includes(hash)) {
+        setActiveTab(hash);
+      }
+    }
+  }, [tabs, activeTabId]);
+
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const themeDropdownRef = useRef(null);
+  
+  const [themeToDelete, setThemeToDelete] = useState(null);
+
+  const [isDownloadingUpdate, setIsDownloadingUpdate] = useState(false);
+  const [updateProgress, setUpdateProgress] = useState(0);
+
+  const handleInstallUpdate = async () => {
+    if (!updateAvailable?.downloadUrl) return;
+    setIsDownloadingUpdate(true);
+    
+    // Listen for progress
+    window.electronAPI.updater.onProgress((data) => {
+      setUpdateProgress(data.percent);
+    });
+
+    try {
+      await window.electronAPI.updater.installUpdate(updateAvailable.downloadUrl);
+    } catch (e) {
+      console.error(e);
+      setIsDownloadingUpdate(false);
+    }
+  };
 
   useEffect(() => {
     const handler = (e) => {
@@ -65,6 +101,31 @@ export default function Settings({ isActive }) {
           <div className="settings-bg" />
           <div className="settings-fog-layer" />
         </>
+      )}
+
+      {/* Custom Theme Deletion Modal - PLACED AT ROOT TO ESCAPE TRANSFORMS */}
+      {themeToDelete && (
+        <div className="settings-modal-overlay" onClick={() => setThemeToDelete(null)}>
+          <div className="settings-modal-content" onClick={e => e.stopPropagation()}>
+            <h3 className="settings-modal-title">
+              Obliterate Theme?
+            </h3>
+            <p className="settings-modal-desc">
+              Are you sure you want to permanently delete the <strong>"{themeToDelete.name}"</strong> theme? This action cannot be undone.
+            </p>
+            <div className="settings-modal-actions">
+              <button className="settings-modal-cancel" onClick={() => setThemeToDelete(null)}>
+                Cancel
+              </button>
+              <button className="settings-modal-delete" onClick={() => {
+                deleteCustomTheme(themeToDelete.id);
+                setThemeToDelete(null);
+              }}>
+                <Trash2 size={14} /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       <div className="settings-inner">
@@ -255,7 +316,11 @@ export default function Settings({ isActive }) {
                                     ><Pencil size={12} /></button>
                                     <button
                                       title="Delete"
-                                      onClick={(e) => { e.stopPropagation(); deleteCustomTheme(t.id); }}
+                                      onClick={(e) => { 
+                                        e.stopPropagation(); 
+                                        setThemeDropdownOpen(false);
+                                        setThemeToDelete(t);
+                                      }}
                                       style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '2px 4px', display: 'flex', alignItems: 'center', borderRadius: '2px' }}
                                       onMouseEnter={e => e.currentTarget.style.color = '#ff5555'}
                                       onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
@@ -418,7 +483,49 @@ export default function Settings({ isActive }) {
                 <div className="glass-panel text-center">
                   <h3 className="about-branding">HALLOW<span>NET</span></h3>
                   <p className="about-desc">A Chromium-based browser built strictly for Halloween, horror, and autumn enthusiasts.</p>
-                  <span className="about-version">v1.6.8 — Ghostly Helper Appears</span>
+                  <span className="about-version">v1.7.0 — Theme Lab Renovation</span>
+                  
+                  {updateAvailable && (
+                    <div className="update-available-panel">
+                      <h4 className="update-title">Update Available! (v{updateAvailable.version})</h4>
+                      <div className="update-notes text-left" style={{ textAlign: 'left', lineHeight: '1.5', margin: '0 auto', maxWidth: '500px' }}>
+                        {(() => {
+                          const text = updateAvailable.releaseNotes;
+                          if (!text) return 'A spooky new update awaits.';
+                          return text.split('\n').map((line, i) => {
+                            let cl = line.trim();
+                            if (!cl) return <br key={i} />;
+                            if (cl.startsWith('### ')) return <h5 key={i} style={{marginTop: '12px', marginBottom: '4px', color: '#fff', fontSize: '14px'}}>{cl.replace('### ', '')}</h5>;
+                            if (cl.startsWith('## ')) return <h4 key={i} style={{marginTop: '12px', marginBottom: '4px', color: '#fff', fontSize: '15px'}}>{cl.replace('## ', '')}</h4>;
+                            if (cl.startsWith('# ')) return <h3 key={i} style={{marginTop: '12px', marginBottom: '4px', color: '#fff', fontSize: '16px'}}>{cl.replace('# ', '')}</h3>;
+                            
+                            const parts = cl.split(/(\*\*.*?\*\*)/g);
+                            const formatted = parts.map((part, j) => {
+                              if (part.startsWith('**') && part.endsWith('**')) return <strong key={j} style={{color: '#86efac'}}>{part.slice(2, -2)}</strong>;
+                              return part;
+                            });
+                            return <div key={i} style={{marginBottom: '4px'}}>{formatted}</div>;
+                          });
+                        })()}
+                      </div>
+                      
+                      {!isDownloadingUpdate ? (
+                        <button 
+                          onClick={handleInstallUpdate}
+                          className="settings-btn update-install-btn"
+                        >
+                          Download & Install Update
+                        </button>
+                      ) : (
+                        <div className="update-progress-container">
+                          <div 
+                            className="update-progress-bar"
+                            style={{ width: `${updateProgress}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

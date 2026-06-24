@@ -29,10 +29,11 @@ const playBlip = (char) => {
   } catch (e) {}
 };
 
-const TypewriterText = ({ text }) => {
+const TypewriterText = ({ text, onTalkStatusChange }) => {
   const [displayed, setDisplayed] = useState('');
   useEffect(() => {
     setDisplayed('');
+    if (onTalkStatusChange) onTalkStatusChange(true);
     let i = 0;
     const interval = setInterval(() => {
       const nextChar = text[i];
@@ -44,10 +45,16 @@ const TypewriterText = ({ text }) => {
       }
       
       i++;
-      if (i >= text.length) clearInterval(interval);
+      if (i >= text.length) {
+        clearInterval(interval);
+        if (onTalkStatusChange) onTalkStatusChange(false);
+      }
     }, 30);
-    return () => clearInterval(interval);
-  }, [text]);
+    return () => {
+      clearInterval(interval);
+      if (onTalkStatusChange) onTalkStatusChange(false);
+    };
+  }, [text, onTalkStatusChange]);
   return <span>{displayed}</span>;
 };
 
@@ -161,7 +168,7 @@ const TUTORIAL_STEPS = [
     target: '.poltergeist-menu .stop-play-btn',
     action: 'simulate-poltergeist',
     title: 'Playing the Macro',
-    text: 'Watch closely! The Poltergeist will automatically execute your macro using the authentic neon spirit!',
+    text: 'Watch closely! The Poltergeist will automatically execute your macro using its spooky spirit!',
     btnText: 'Next'
   },
   {
@@ -209,7 +216,7 @@ const TUTORIAL_STEPS = [
     target: '.sidebar',
     action: 'open-sidebar',
     title: 'The Sidebar',
-    text: 'Inside the Sidebar, you can quickly access your Bookmarks, History, Downloads, and view the Weather.',
+    text: 'Inside the Sidebar, you can quickly access your Bookmarks, Recent History, Active Theme, and view the Weather.',
     btnText: 'Next'
   },
   {
@@ -250,7 +257,7 @@ const TUTORIAL_STEPS = [
   {
     id: 'theme-creator-page',
     target: null,
-    placement: 'bottom-left',
+    placement: 'bottom-right',
     action: 'navigate-theme-lab',
     title: 'Designing Themes',
     text: 'Here you can design your own custom color palettes with a live preview. When you are done, save it and it will apply instantly!',
@@ -302,6 +309,7 @@ export default function GhostTutorial() {
   const [spotlightRects, setSpotlightRects] = useState([]);
   const [isNarrow, setIsNarrow] = useState(false);
   const [currentGhostWidth, setCurrentGhostWidth] = useState(340);
+  const [isTalking, setIsTalking] = useState(false);
 
   useEffect(() => {
     const hasCompleted = localStorage.getItem('hwn_tutorial_completed');
@@ -321,7 +329,7 @@ export default function GhostTutorial() {
         if (step.placement === 'bottom-left') {
           setPos(prev => prev.x === 220 && prev.y === window.innerHeight - 380 ? prev : { x: 220, y: window.innerHeight - 380, centered: false });
         } else if (step.placement === 'bottom-right') {
-          setPos(prev => prev.x === window.innerWidth - 200 && prev.y === window.innerHeight - 170 ? prev : { x: window.innerWidth - 200, y: window.innerHeight - 170, centered: true });
+          setPos(prev => prev.x === window.innerWidth - 200 && prev.y === window.innerHeight - 400 ? prev : { x: window.innerWidth - 200, y: window.innerHeight - 400, centered: true });
         } else {
           setPos(prev => prev.x === window.innerWidth / 2 && prev.y === window.innerHeight / 2 ? prev : { x: window.innerWidth / 2, y: window.innerHeight / 2, centered: true });
         }
@@ -479,10 +487,8 @@ export default function GhostTutorial() {
         <div className={`ghost-svg-container ${exitPhase === 'ghost' ? 'ghost-fly-away' : ''}`}>
           <svg viewBox="0 0 80 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M40 4C19.5 4 4 19.5 4 40V88L14 78L24 88L34 78L40 82L46 78L56 88L66 78L76 88V40C76 19.5 60.5 4 40 4Z" fill="color-mix(in srgb, var(--accent-primary) 15%, #08060a)" stroke="color-mix(in srgb, var(--accent-primary) 60%, transparent)" strokeWidth="2" />
-            <circle cx="30" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
-            <circle cx="50" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
-            <circle cx="31.5" cy="38.5" r="1.6" fill="#07040e" />
-            <circle cx="51.5" cy="38.5" r="1.6" fill="#07040e" />
+            <circle cx="30" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" className={isTalking ? 'ghost-eye-glow-infinite' : ''} />
+            <circle cx="50" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" className={isTalking ? 'ghost-eye-glow-infinite' : ''} />
           </svg>
           <div className="ghost-trail-particles">
             <div className="ghost-particle"></div>

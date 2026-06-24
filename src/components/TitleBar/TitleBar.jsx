@@ -28,12 +28,13 @@ export default function TitleBar() {
             stroke="rgba(255,85,0,0.6)"
             strokeWidth="2"
           />
-          <circle cx="30" cy="40" r="4.5" fill="rgba(255,85,0,0.85)" />
-          <circle cx="50" cy="40" r="4.5" fill="rgba(255,85,0,0.85)" />
-          <circle cx="31.5" cy="38.5" r="1.6" fill="#07040e" />
-          <circle cx="51.5" cy="38.5" r="1.6" fill="#07040e" />
+          <circle cx="30" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
+          <circle cx="50" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
         </svg>
-        <span className="titlebar__name">HallowNet</span>
+        <span className="titlebar__name">
+          <span style={{ color: 'var(--accent-primary)' }}>Hallow</span>
+          <span style={{ color: 'var(--accent-secondary)' }}>Net</span>
+        </span>
       </div>
 
       {/* Window control buttons */}

@@ -122,10 +122,12 @@ export default function BrowserChrome() {
     tabs, activeTabId, setActiveTabId, addTab, closeTab, updateTab, moveTab,
     navigate, setSidebarOpen, bookmarks, toggleBookmark,
     showTabIcons, toolbarSettings, audioSettings, goBack, goForward, reload, ghostMode, toggleGhostMode,
-    downloads, clearDownloads, removeDownload, pauseDownload, resumeDownload, cancelDownload, showDownload
+    downloads, clearDownloads, removeDownload, pauseDownload, resumeDownload, cancelDownload, showDownload,
+    updateAvailable
   } = useBrowser();
   const [urlInput, setUrlInput] = useState('');
   const [maximized, setMaximized] = useState(false);
+  const [showUpdateBanner, setShowUpdateBanner] = useState(true);
   const [showPoltergeistMenu, setShowPoltergeistMenu] = useState(false);
   const [showBansheeMenu, setShowBansheeMenu] = useState(false);
   const [showGargoyleMenu, setShowGargoyleMenu] = useState(false);
@@ -437,6 +439,23 @@ export default function BrowserChrome() {
   return (
     <div className="browser-chrome">
 
+      {updateAvailable && showUpdateBanner && (
+        <div className="update-banner" style={{ WebkitAppRegion: 'no-drag' }}>
+          <div className="update-banner-content">
+            <span className="update-banner-text">A spooky new update (v{updateAvailable.version}) is available!</span>
+            <button 
+              onClick={() => navigate(activeTabId, 'hallow://settings#about')}
+              className="update-banner-link"
+            >
+              Open Settings to Install
+            </button>
+          </div>
+          <button onClick={() => setShowUpdateBanner(false)} className="update-banner-close" title="Dismiss">
+            <X size={12} />
+          </button>
+        </div>
+      )}
+
       {/* ── Tab Strip / Title Bar ── */}
       <div className="tabs-row">
         {/* Logo / Drag region left */}
@@ -450,8 +469,6 @@ export default function BrowserChrome() {
             />
             <circle cx="30" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
             <circle cx="50" cy="40" r="4.5" fill="color-mix(in srgb, var(--accent-primary) 85%, transparent)" />
-            <circle cx="31.5" cy="38.5" r="1.6" fill="#07040e" />
-            <circle cx="51.5" cy="38.5" r="1.6" fill="#07040e" />
           </svg>
         </div>
 

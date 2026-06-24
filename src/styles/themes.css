@@ -2,7 +2,18 @@
   /* ── Classic Halloween ── */
   --bg-primary:    #08060b;   /* near-void black with a purple undertone */
   --bg-secondary:  #0f0c12;   /* slightly elevated surface */
-  --bg-tertiary:   #181320;   /* card/panel surface */
+
+  /* ── Browser Chrome Defaults ── */
+  --chrome-bg-base:       #080709;
+  --chrome-bg-tabs:       linear-gradient(180deg, #050507 0%, #0d0b0f 100%);
+  --chrome-bg-tab-active: #131015;
+  --chrome-bg-tab-inactive: rgba(255, 255, 255, 0.03);
+  --chrome-bg-sidebar:    rgba(15, 12, 18, 0.75);
+  --chrome-bg-favicon:    #3a3040;
+  --chrome-bg-menu:       rgba(8, 5, 16, 0.96);
+  --chrome-bg-toolbar:    #0f0c12;
+  --chrome-bg-urlbar:     #06050a;
+  --chrome-text-sidebar:  rgba(180, 120, 60, 0.7);
 
   --accent-primary:   #ff5500;   /* pumpkin ember orange */
   --accent-secondary: #7b21d4;   /* deep witchy purple */
@@ -34,7 +45,6 @@
 [data-theme='autumn-forest'] {
   --bg-primary:    #090705;
   --bg-secondary:  #120f0c;
-  --bg-tertiary:   #1e1812;
 
   --accent-primary:   #c8401a;
   --accent-secondary: #d68a00;
@@ -56,9 +66,9 @@
 
 /* ── Geesebimps ── */
 [data-theme='geesebimps'] {
+  --brand-font: 'Creepster', cursive;
   --bg-primary:    #030502;   /* near-void green/black */
   --bg-secondary:  #080d05;
-  --bg-tertiary:   #0d1408;
 
   --accent-primary:   #39ff14;   /* toxic neon green */
   --accent-secondary: #00ff40;   /* lighter neon green */
@@ -84,10 +94,9 @@
 [data-theme='blood-moon'] {
   --bg-primary:    #0a0202;   /* deep blood void */
   --bg-secondary:  #140303;
-  --bg-tertiary:   #1f0505;
 
   --accent-primary:   #b80000;   /* blood red */
-  --accent-secondary: #ff1a1a;   /* bright blood red */
+  --accent-secondary: #ffffff;   /* white */
   --accent-glow:      #ff3333;
 
   --text-primary:   #ffebe6;
@@ -109,7 +118,6 @@
 [data-theme='grimoire'] {
   --bg-primary:    #0a050f;
   --bg-secondary:  #150a1f;
-  --bg-tertiary:   #210f30;
 
   --accent-primary:   #4a0080;
   --accent-secondary: #55ff55;
@@ -129,6 +137,46 @@
   --shadow-glow-purple: 0 0 20px rgba(74, 0, 128, 0.6), 0 0 40px rgba(74, 0, 128, 0.3);
 
   --brand-font: 'Federo', sans-serif;
+}
+
+/* ── Whiteout ── */
+[data-theme='whiteout'] {
+  --bg-primary:    #ececec;
+  --bg-secondary:  #7c7b7c;
+
+  --accent-primary:   #ff0000;
+  --accent-secondary: #c8c8c8;
+  --accent-glow:      #ff3333;
+
+  --text-primary:   #626262;
+  --text-secondary: #c9c9c9;
+  --text-muted:     #8f8f8f;
+  
+  --text-searchbar: #ffffff;
+  --chrome-text-tab-active: #000000;
+  --chrome-text-tab-inactive: #d1d1d1;
+  --chrome-text-sidebar: rgba(0, 0, 0, 0.7);
+
+  --chrome-bg-base:       #080709;
+  --chrome-bg-tabs:       #050507;
+  --chrome-bg-tab-active: #ececec;
+  --chrome-bg-tab-inactive: rgba(255, 255, 255, 0.03);
+  --chrome-bg-sidebar:    rgba(255, 255, 255, 0.75);
+  --chrome-bg-favicon:    #3a3040;
+  --chrome-bg-menu:       rgba(8, 5, 16, 0.96);
+  --chrome-bg-toolbar:    #ececec;
+  --chrome-bg-urlbar:     #06050a;
+
+  --border-color:     #353535;
+  --border-highlight: #540000;
+
+  --panel-bg:   rgba(15, 12, 18, 0.75);
+  --dashboard-bg: url('../assets/backgrounds/dark_forest.png');
+
+  --shadow-glow-orange: 0 0 20px rgba(255, 0, 0, 0.4), 0 0 40px rgba(255, 0, 0, 0.15);
+  --shadow-glow-purple: 0 0 20px rgba(255, 0, 0, 0.4), 0 0 40px rgba(255, 0, 0, 0.15);
+
+  --brand-font: 'October Crow', serif;
 }
 
 body {

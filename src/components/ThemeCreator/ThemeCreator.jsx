@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useBrowser, BG_MAP } from '../../context/BrowserContext';
+import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful';
 import { Save, X, Beaker, Eye, LayoutTemplate, Ghost, Upload } from 'lucide-react';
 import './ThemeCreator.css';
 
@@ -8,7 +9,6 @@ const DEFAULT_THEME_STATE = {
   colors: {
     bgPrimary: '#08060b',
     bgSecondary: '#0f0c12',
-    bgTertiary: '#181320',
     accentPrimary: '#ff5500',
     accentSecondary: '#7b21d4',
     textPrimary: '#f0ecf5',
@@ -16,15 +16,36 @@ const DEFAULT_THEME_STATE = {
     textMuted: '#4a4055',
     borderColor: '#221133',
     borderHighlight: '#552200',
-    panelBg: 'rgba(15, 12, 18, 0.75)'
+    panelBg: 'rgba(15, 12, 18, 0.75)',
+    chromeBgBase: '#080709',
+    chromeBgTabs: '#050507',
+    chromeBgTabActive: '#131015',
+    chromeBgTabInactive: 'rgba(255, 255, 255, 0.03)',
+    chromeBgSidebar: 'rgba(15, 12, 18, 0.75)',
+    chromeBgFavicon: '#3a3040',
+    chromeBgMenu: 'rgba(8, 5, 16, 0.96)',
+    chromeBgToolbar: '#0f0c12',
+    chromeBgUrlbar: '#06050a',
+    chromeTextSidebar: 'rgba(180, 120, 60, 0.7)',
+    textSearchbar: '#f0ecf5',
+    chromeTextTabActive: '#f0ecf5',
+    chromeTextTabInactive: '#9088a0'
   },
   brandFont: 'Cinzel Decorative',
   uiFont: 'Inter',
   backgroundImage: 'dashboard-bg',
-  particleAnimation: 'bats'
+  particleAnimation: 'bats',
+  showFog: true
 };
 
 const BRAND_FONTS = [
+  'Cryptik',
+  'Exquisite Corpse',
+  'Frank Knows',
+  'Kreepy Krawly',
+  'October Crow',
+  'Raven Scream',
+  'Raven Song',
   'Federo', 
   'Cinzel Decorative', 
   'Cinzel', 
@@ -46,7 +67,7 @@ const BRAND_FONTS = [
   'Piedra',
   'Scream Real'
 ];
-const UI_FONTS = ['Inter', 'Roboto', 'Share Tech Mono'];
+const UI_FONTS = ['Inter', 'Roboto', 'Share Tech Mono', 'Outfit', 'Jura', 'Space Mono', 'Merriweather', 'Playfair Display', 'Lato', 'Montserrat', 'Oswald'];
 
 export default function ThemeCreator() {
   const { saveCustomTheme, activeTabId, navigate, setTheme, customThemes, tabs } = useBrowser();
@@ -126,14 +147,26 @@ export default function ThemeCreator() {
     };
     saveCustomTheme(newTheme);
     setTheme(id);
-    navigate(activeTabId, 'hallow://settings');
+    navigate(activeTabId, 'hallow://settings#themes');
   };
 
   // Live Preview CSS Injection
   const previewStyle = {
     '--bg-primary': themeState.colors.bgPrimary,
     '--bg-secondary': themeState.colors.bgSecondary,
-    '--bg-tertiary': themeState.colors.bgTertiary,
+    '--chrome-bg-base': themeState.colors.chromeBgBase,
+    '--chrome-bg-tabs': themeState.colors.chromeBgTabs,
+    '--chrome-bg-tab-active': themeState.colors.chromeBgTabActive,
+    '--chrome-bg-tab-inactive': themeState.colors.chromeBgTabInactive,
+    '--chrome-bg-sidebar': themeState.colors.chromeBgSidebar,
+    '--chrome-bg-favicon': themeState.colors.chromeBgFavicon,
+    '--chrome-bg-menu': themeState.colors.chromeBgMenu,
+    '--chrome-bg-toolbar': themeState.colors.chromeBgToolbar,
+    '--chrome-bg-urlbar': themeState.colors.chromeBgUrlbar,
+    '--chrome-text-sidebar': themeState.colors.chromeTextSidebar,
+    '--text-searchbar': themeState.colors.textSearchbar,
+    '--chrome-text-tab-active': themeState.colors.chromeTextTabActive,
+    '--chrome-text-tab-inactive': themeState.colors.chromeTextTabInactive,
     '--accent-primary': themeState.colors.accentPrimary,
     '--accent-secondary': themeState.colors.accentSecondary,
     '--accent-glow': themeState.colors.accentPrimary,
@@ -145,8 +178,9 @@ export default function ThemeCreator() {
     '--panel-bg': themeState.colors.panelBg,
     '--brand-font': `'${themeState.brandFont}', sans-serif`,
     '--font-family': `'${themeState.uiFont}', sans-serif`,
+    '--dashboard-bg': !themeState.backgroundImage || themeState.backgroundImage === 'none' ? 'none' : `url('${themeState.backgroundImage?.startsWith('data:image') ? themeState.backgroundImage : (BG_MAP[themeState.backgroundImage] || BG_MAP['dashboard-bg'])}')`,
     '--shadow-glow-orange': `0 0 20px color-mix(in srgb, ${themeState.colors.accentPrimary} 40%, transparent), 0 0 40px color-mix(in srgb, ${themeState.colors.accentPrimary} 15%, transparent)`,
-    background: 'var(--bg-primary)',
+    background: 'var(--chrome-bg-base)',
     color: 'var(--text-primary)',
     fontFamily: 'var(--font-family)',
     height: '100%',
@@ -168,7 +202,7 @@ export default function ThemeCreator() {
           </h1>
         </div>
         <div className="tc-actions">
-          <button className="tc-btn tc-btn-cancel" onClick={() => navigate(activeTabId, 'hallow://settings')}>
+          <button className="tc-btn tc-btn-cancel" onClick={() => navigate(activeTabId, 'hallow://settings#themes')}>
             <X size={16} /> Cancel
           </button>
           <button className="tc-btn tc-btn-save" onClick={handleSave}>
@@ -263,10 +297,14 @@ export default function ThemeCreator() {
                   <div 
                     key={bg}
                     className={`tc-bg-thumbnail ${themeState.backgroundImage === bg ? 'active' : ''}`}
-                    style={{ backgroundImage: `url(${BG_MAP[bg]})` }}
+                    style={{ 
+                      backgroundImage: bg === 'none' ? 'none' : `url(${BG_MAP[bg]})`,
+                      ...(bg === 'none' ? { display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.03)' } : {})
+                    }}
                     onClick={() => setThemeState({...themeState, backgroundImage: bg})}
                     title={bg.replace('_', ' ')}
                   >
+                    {bg === 'none' && <span style={{ color: 'rgba(255,255,255,0.3)', fontFamily: 'Cinzel, serif', fontSize: '1.2rem', letterSpacing: '0.2em' }}>NONE</span>}
                     {themeState.backgroundImage === bg && (
                       <div className="tc-bg-selected-overlay"><Ghost size={24} /></div>
                     )}
@@ -302,6 +340,16 @@ export default function ThemeCreator() {
                   </button>
                 ))}
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '15px' }}>
+                <input 
+                  type="checkbox" 
+                  id="showFogToggle"
+                  checked={themeState.showFog ?? true}
+                  onChange={(e) => setThemeState({...themeState, showFog: e.target.checked})}
+                  style={{ accentColor: '#ff5500', width: '16px', height: '16px', cursor: 'pointer' }}
+                />
+                <label htmlFor="showFogToggle" style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontFamily: 'Share Tech Mono, monospace' }}>Enable Flowing Fog Layer</label>
+              </div>
             </div>
             
             <div className="tc-section">
@@ -309,9 +357,20 @@ export default function ThemeCreator() {
             <div className="tc-color-grid">
               <ColorPicker label="Accent Primary" value={themeState.colors.accentPrimary} onChange={(v) => handleColorChange('accentPrimary', v)} />
               <ColorPicker label="Accent Secondary" value={themeState.colors.accentSecondary} onChange={(v) => handleColorChange('accentSecondary', v)} />
-              <ColorPicker label="Background Primary" value={themeState.colors.bgPrimary} onChange={(v) => handleColorChange('bgPrimary', v)} />
-              <ColorPicker label="Background Secondary" value={themeState.colors.bgSecondary} onChange={(v) => handleColorChange('bgSecondary', v)} />
-              <ColorPicker label="Background Tertiary" value={themeState.colors.bgTertiary} onChange={(v) => handleColorChange('bgTertiary', v)} />
+              <ColorPicker label="New Tab Background" value={themeState.colors.bgPrimary} onChange={(v) => handleColorChange('bgPrimary', v)} />
+            </div>
+          </div>
+
+          <div className="tc-section">
+            <h2>Browser Chrome Colors</h2>
+            <div className="tc-color-grid">
+              <ColorPicker label="Top Bar Base" value={themeState.colors.chromeBgBase} onChange={(v) => handleColorChange('chromeBgBase', v)} />
+              <ColorPicker label="Tabs Strip" value={themeState.colors.chromeBgTabs} onChange={(v) => handleColorChange('chromeBgTabs', v)} />
+              <ColorPicker label="Active Tab" value={themeState.colors.chromeBgTabActive} onChange={(v) => handleColorChange('chromeBgTabActive', v)} />
+              <ColorPicker label="Inactive Tabs" value={themeState.colors.chromeBgTabInactive} onChange={(v) => handleColorChange('chromeBgTabInactive', v)} />
+              <ColorPicker label="Toolbar" value={themeState.colors.chromeBgToolbar} onChange={(v) => handleColorChange('chromeBgToolbar', v)} />
+              <ColorPicker label="Address Bar" value={themeState.colors.chromeBgUrlbar} onChange={(v) => handleColorChange('chromeBgUrlbar', v)} />
+              <ColorPicker label="Sidebar BG" value={themeState.colors.chromeBgSidebar} onChange={(v) => handleColorChange('chromeBgSidebar', v)} />
             </div>
           </div>
 
@@ -321,6 +380,10 @@ export default function ThemeCreator() {
               <ColorPicker label="Text Primary" value={themeState.colors.textPrimary} onChange={(v) => handleColorChange('textPrimary', v)} />
               <ColorPicker label="Text Secondary" value={themeState.colors.textSecondary} onChange={(v) => handleColorChange('textSecondary', v)} />
               <ColorPicker label="Text Muted" value={themeState.colors.textMuted} onChange={(v) => handleColorChange('textMuted', v)} />
+              <ColorPicker label="Sidebar Text" value={themeState.colors.chromeTextSidebar} onChange={(v) => handleColorChange('chromeTextSidebar', v)} />
+              <ColorPicker label="Search Bar Text" value={themeState.colors.textSearchbar} onChange={(v) => handleColorChange('textSearchbar', v)} />
+              <ColorPicker label="Active Tab Text" value={themeState.colors.chromeTextTabActive} onChange={(v) => handleColorChange('chromeTextTabActive', v)} />
+              <ColorPicker label="Inactive Tab Text" value={themeState.colors.chromeTextTabInactive} onChange={(v) => handleColorChange('chromeTextTabInactive', v)} />
               <ColorPicker label="Border Color" value={themeState.colors.borderColor} onChange={(v) => handleColorChange('borderColor', v)} />
               <ColorPicker label="Border Highlight" value={themeState.colors.borderHighlight} onChange={(v) => handleColorChange('borderHighlight', v)} />
             </div>
@@ -334,12 +397,12 @@ export default function ThemeCreator() {
           </div>
           <div className="tc-preview-window-wrapper">
             <div style={previewStyle}>
-              {/* Fake Titlebar */}
-              <div style={{ height: '38px', background: 'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)', display: 'flex', alignItems: 'flex-end', borderBottom: '1px solid var(--border-color)', paddingLeft: '8px' }}>
+              {/* Browser Chrome Simulator */}
+              <div style={{ height: '38px', background: 'var(--chrome-bg-tabs)', display: 'flex', alignItems: 'flex-end', borderBottom: '1px solid var(--border-highlight)', paddingLeft: '8px' }}>
                 <div style={{ 
                   padding: '0 16px', 
                   height: '32px', 
-                  background: 'var(--bg-tertiary)', 
+                  background: 'var(--chrome-bg-tab-active)', 
                   color: 'var(--text-primary)', 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -351,39 +414,86 @@ export default function ThemeCreator() {
                   clipPath: 'polygon(6px 0%, calc(100% - 6px) 0%, 100% 100%, 0% 100%)'
                 }}>
                   <LayoutTemplate size={12} color="var(--accent-primary)" />
-                  HallowNet Dashboard
+                  <span style={{ color: 'var(--accent-primary)' }}>Hallow</span><span style={{ color: 'var(--accent-secondary)' }}>Net</span> Dashboard
                 </div>
               </div>
               
               {/* Fake Address Bar */}
-              <div style={{ height: '46px', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-highlight)', display: 'flex', alignItems: 'center', padding: '0 12px' }}>
-                <div style={{ flex: 1, height: '30px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '4px', display: 'flex', alignItems: 'center', padding: '0 10px', color: 'var(--text-secondary)', fontSize: '12px' }}>
-                  hallow://theme-creator
+              <div style={{ height: '46px', background: 'var(--chrome-bg-toolbar)', borderBottom: '1px solid var(--border-highlight)', display: 'flex', alignItems: 'center', padding: '0 12px' }}>
+                <div style={{ flex: 1, height: '30px', background: 'var(--chrome-bg-urlbar)', border: '1px solid var(--border-color)', borderRadius: '4px', display: 'flex', alignItems: 'center', padding: '0 10px', color: 'var(--text-secondary)', fontSize: '12px' }}>
+                  hallow://dashboard
                 </div>
                 <div style={{ marginLeft: '12px', display: 'flex', alignItems: 'center' }}>
                   <Ghost size={16} color="var(--accent-primary)" />
                 </div>
               </div>
 
-              {/* Fake Content Area */}
-              <div style={{ flex: 1, padding: '30px', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <h1 style={{ fontFamily: 'var(--brand-font)', color: 'var(--accent-primary)', textShadow: '0 0 10px var(--accent-primary)', fontSize: '3rem', margin: 0 }}>{themeState.name || 'HallowNet'}</h1>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5', maxWidth: '400px' }}>
-                  This is a live preview of your forged theme. Colors, fonts, and borders will update instantly.
-                </p>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button style={{ background: 'color-mix(in srgb, var(--accent-primary) 20%, transparent)', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)', padding: '10px 20px', fontFamily: 'var(--brand-font)', fontSize: '1rem', cursor: 'pointer', boxShadow: 'var(--shadow-glow-orange)' }}>
-                    Primary Action
-                  </button>
-                  <button style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '10px 20px', fontFamily: 'var(--font-family)', fontSize: '14px' }}>
-                    Secondary
-                  </button>
+              {/* Main Content Area (Layout Simulator) */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'row', position: 'relative' }}>
+                {/* Main Dashboard Panel */}
+                <div style={{ 
+                  flex: 1, 
+                  background: 'var(--dashboard-bg) center/cover no-repeat', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  padding: '30px', 
+                  gap: '20px',
+                  position: 'relative'
+                }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 0 }}></div>
+                  {/* Dashboard Content */}
+                  <div style={{ textAlign: 'center', marginTop: '20px', zIndex: 1 }}>
+                    <h1 style={{ fontFamily: 'var(--brand-font)', fontSize: '3rem', margin: 0 }}>
+                      {themeState.name ? (
+                        <span style={{ color: 'var(--accent-primary)', textShadow: '0 0 10px var(--accent-primary)' }}>{themeState.name}</span>
+                      ) : (
+                        <>
+                          <span style={{ color: 'var(--accent-primary)', textShadow: '0 0 10px var(--accent-primary)' }}>HALLOW</span>
+                          <span style={{ color: 'var(--accent-secondary)', textShadow: '0 0 10px var(--accent-secondary)' }}>NET</span>
+                        </>
+                      )}
+                    </h1>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5', margin: '10px auto', maxWidth: '400px' }}>
+                      This is a live preview of your forged theme. Colors, fonts, and borders will update instantly.
+                    </p>
+                  </div>
+                  
+                  {/* Fake Grid Cards */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginTop: '10px', zIndex: 1 }}>
+                    {[1, 2, 3].map(i => (
+                      <div key={i} style={{ 
+                        height: '60px', 
+                        background: 'var(--panel-bg)', 
+                        border: '1px solid var(--border-color)', 
+                        backdropFilter: 'blur(8px)',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--accent-primary)',
+                        boxShadow: 'var(--shadow-md)'
+                      }}>
+                        <Ghost size={24} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Fake Glass Panel */}
-                <div style={{ marginTop: '20px', padding: '20px', background: 'var(--panel-bg)', backdropFilter: 'blur(20px)', border: '1px solid var(--border-color)', borderRadius: '4px' }}>
-                  <h3 style={{ color: 'var(--text-primary)', margin: '0 0 10px 0' }}>Glassmorphism Panel</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '12px', margin: 0 }}>Testing the transparency and border highlights of the panel background.</p>
+                {/* Sidebar Simulator */}
+                <div style={{ 
+                  width: '140px', 
+                  background: 'var(--chrome-bg-sidebar)', 
+                  borderLeft: '1px solid var(--border-color)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  padding: '15px',
+                  gap: '10px',
+                  boxShadow: '-5px 0 20px rgba(0,0,0,0.5)'
+                }}>
+                  <div style={{ color: 'color-mix(in srgb, var(--chrome-text-sidebar) 75%, transparent)', fontSize: '10px', fontWeight: 'bold', letterSpacing: '1px', marginBottom: '5px' }}>BOOKMARKS</div>
+                  <div style={{ color: 'color-mix(in srgb, var(--chrome-text-sidebar) 60%, transparent)', fontSize: '11px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '4px' }}>Horror Movies</div>
+                  <div style={{ color: 'color-mix(in srgb, var(--chrome-text-sidebar) 60%, transparent)', fontSize: '11px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '4px' }}>Scary Stories</div>
+                  <div style={{ color: 'color-mix(in srgb, var(--chrome-text-sidebar) 60%, transparent)', fontSize: '11px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '4px' }}>Urban Legends</div>
                 </div>
               </div>
             </div>
@@ -394,59 +504,13 @@ export default function ThemeCreator() {
   );
 }
 
-// Conversion helpers
-function hexToHSL(hex) {
-  let r = 0, g = 0, b = 0;
-  if (hex.length === 4) {
-    r = parseInt(hex[1] + hex[1], 16);
-    g = parseInt(hex[2] + hex[2], 16);
-    b = parseInt(hex[3] + hex[3], 16);
-  } else if (hex.length === 7) {
-    r = parseInt(hex.substring(1, 3), 16);
-    g = parseInt(hex.substring(3, 5), 16);
-    b = parseInt(hex.substring(5, 7), 16);
-  }
-  r /= 255; g /= 255; b /= 255;
-  let cmin = Math.min(r,g,b), cmax = Math.max(r,g,b), delta = cmax - cmin, h = 0, s = 0, l = 0;
-  if (delta === 0) h = 0;
-  else if (cmax === r) h = ((g - b) / delta) % 6;
-  else if (cmax === g) h = (b - r) / delta + 2;
-  else h = (r - g) / delta + 4;
-  h = Math.round(h * 60);
-  if (h < 0) h += 360;
-  l = (cmax + cmin) / 2;
-  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-  s = +(s * 100).toFixed(1);
-  l = +(l * 100).toFixed(1);
-  return { h, s, l };
-}
-
-function HSLToHex(h, s, l) {
-  s /= 100; l /= 100;
-  let c = (1 - Math.abs(2 * l - 1)) * s,
-      x = c * (1 - Math.abs((h / 60) % 2 - 1)),
-      m = l - c/2, r = 0, g = 0, b = 0;
-  if (0 <= h && h < 60) { r = c; g = x; b = 0; }
-  else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
-  else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
-  else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
-  else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
-  else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
-  r = Math.round((r + m) * 255).toString(16).padStart(2, '0');
-  g = Math.round((g + m) * 255).toString(16).padStart(2, '0');
-  b = Math.round((b + m) * 255).toString(16).padStart(2, '0');
-  return `#${r}${g}${b}`;
-}
-
-// Custom Color Picker Component using HSL sliders for a sleek Triple-A feel
+// Custom Color Picker Component using react-colorful for a sleek Triple-A feel
 function ColorPicker({ label, value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const safeValue = value && value.length === 7 ? value : '#000000';
-  const hsl = hexToHSL(safeValue);
+  const isRgba = value && value.toString().startsWith('rgba');
+  const safeValue = value || '#000000';
 
-  const handleSliderChange = (h, s, l) => {
-    onChange(HSLToHex(h, s, l));
-  };
+  const PickerComponent = isRgba ? RgbaStringColorPicker : HexColorPicker;
 
   return (
     <div className="tc-color-picker-wrapper" style={{ position: 'relative' }}>
@@ -458,11 +522,10 @@ function ColorPicker({ label, value, onChange }) {
         />
         <input 
           type="text" 
-          value={value} 
+          value={value || ''} 
           onChange={(e) => onChange(e.target.value)}
           className="tc-color-hex-input"
-          placeholder="#RRGGBB"
-          maxLength={7}
+          placeholder={isRgba ? "rgba(r,g,b,a)" : "#RRGGBB"}
           onClick={(e) => e.stopPropagation()}
         />
       </div>
@@ -470,40 +533,8 @@ function ColorPicker({ label, value, onChange }) {
       {isOpen && (
         <>
           <div className="tc-popover-overlay" onClick={() => setIsOpen(false)} />
-          <div className="tc-color-popover">
-            <div className="tc-color-preview-large" style={{ backgroundColor: safeValue }} />
-            
-            <div className="tc-slider-group">
-              <div className="tc-slider-row">
-                <span className="tc-slider-label">H</span>
-                <input 
-                  type="range" min="0" max="360" value={hsl.h} 
-                  onChange={e => handleSliderChange(Number(e.target.value), hsl.s, hsl.l)}
-                  className="tc-range-slider tc-range-hue"
-                  style={{ background: 'linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)' }}
-                />
-              </div>
-
-              <div className="tc-slider-row">
-                <span className="tc-slider-label">S</span>
-                <input 
-                  type="range" min="0" max="100" value={hsl.s} 
-                  onChange={e => handleSliderChange(hsl.h, Number(e.target.value), hsl.l)}
-                  className="tc-range-slider tc-range-sat"
-                  style={{ background: `linear-gradient(to right, hsl(${hsl.h}, 0%, ${hsl.l}%), hsl(${hsl.h}, 100%, ${hsl.l}%))` }}
-                />
-              </div>
-
-              <div className="tc-slider-row">
-                <span className="tc-slider-label">L</span>
-                <input 
-                  type="range" min="0" max="100" value={hsl.l} 
-                  onChange={e => handleSliderChange(hsl.h, hsl.s, Number(e.target.value))}
-                  className="tc-range-slider tc-range-lit"
-                  style={{ background: `linear-gradient(to right, #000, hsl(${hsl.h}, ${hsl.s}%, 50%), #fff)` }}
-                />
-              </div>
-            </div>
+          <div className="tc-color-popover" style={{ padding: '16px', width: 'auto', display: 'flex', justifyContent: 'center', background: 'var(--panel-bg)', backdropFilter: 'blur(10px)' }}>
+            <PickerComponent color={safeValue} onChange={onChange} />
           </div>
         </>
       )}
