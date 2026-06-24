@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/favicon.svg" alt="HallowNet Logo" width="120" />
+  <img src="public/icon.ico" alt="HallowNet Logo" width="120" />
   <h1>HallowNet</h1>
   <p><strong>The ultimate Chromium-based browser for Halloween, horror, and autumn enthusiasts.</strong></p>
 </div>
